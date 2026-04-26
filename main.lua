@@ -17,12 +17,14 @@ PADDLE_SPEED = 200
 function love.load()
     love.graphics.setDefaultFilter("nearest", "nearest")
 
+    love.window.setTitle("Pong")
+
     math.randomseed(os.time())
 
-    largeFont = love.graphics.newFont("font.ttf", 32)
     smallFont = love.graphics.newFont("font.ttf", 8)
+    scoreFont = love.graphics.newFont("font.ttf", 32)
 
-    love.graphics.setFont(largeFont)
+    love.graphics.setFont(smallFont)
 
     love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {
         resizable = false,
@@ -31,6 +33,9 @@ function love.load()
     })
 
     push.setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, { upscale = "normal"})
+
+    player1Score = 0
+    player2Score = 0
 
     player1 = Paddle(10, 30, 5, 20)
     player2 = Paddle(VIRTUAL_WIDTH - 15, VIRTUAL_HEIGHT - 35, 5, 20)
@@ -81,13 +86,28 @@ end
 
 function love.draw()
     push:start()
-    
+
     love.graphics.clear(40/255, 45/255, 52/255, 1) -- Background color
+
+    love.graphics.setFont(scoreFont)
+    love.graphics.print(tostring(player1Score), VIRTUAL_WIDTH / 2 - 50,
+        VIRTUAL_HEIGHT / 3)
+    love.graphics.print(tostring(player2Score), VIRTUAL_WIDTH / 2 + 30,
+        VIRTUAL_HEIGHT / 3)
 
     player1:render()
     player2:render()
 
     ball:render()
 
+    displayFPS()
+
     push.finish()
+end
+
+function displayFPS()
+    love.graphics.setFont(smallFont)
+    love.graphics.setColor(0, 1, 0, 1)
+    love.graphics.print("FPS: " .. tostring(love.timer.getFPS()), 10, 10)
+    love.graphics.setColor(1, 1, 1, 1)
 end
