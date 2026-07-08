@@ -36,7 +36,7 @@ function love.load()
 
     love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {
         resizable = true,
-        fullscreen = false
+        fullscreen = false,
         vsync = true,
     })
 
